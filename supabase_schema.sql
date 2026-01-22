@@ -1,3 +1,28 @@
+-- ==================== LIMPIEZA INICIAL (IMPORTANTE) ====================
+-- Esto elimina las tablas anteriores para asegurar que la nueva configuración (y los triggers) se instalen bien.
+-- NO borra tus usuarios de autenticación (login), solo recarga la estructura de datos.
+
+DROP TABLE IF EXISTS faqs CASCADE;
+DROP TABLE IF EXISTS user_favorites CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS conversation_participants CASCADE;
+DROP TABLE IF EXISTS conversations CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS venue_payment_methods CASCADE;
+DROP TABLE IF EXISTS venue_amenities CASCADE;
+DROP TABLE IF EXISTS venue_images CASCADE;
+DROP TABLE IF EXISTS user_recently_viewed CASCADE;
+DROP TABLE IF EXISTS venues CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+DROP TYPE IF EXISTS user_role CASCADE;
+DROP TYPE IF EXISTS verification_status CASCADE;
+DROP TYPE IF EXISTS venue_status CASCADE;
+DROP TYPE IF EXISTS venue_category CASCADE;
+DROP TYPE IF EXISTS payment_method CASCADE;
+DROP TYPE IF EXISTS booking_status CASCADE;
+
 CREATE TYPE user_role AS ENUM ('CLIENTE', 'PROVEEDOR', 'ADMIN');
 CREATE TYPE verification_status AS ENUM ('PENDING', 'VERIFIED', 'REJECTED');
 CREATE TYPE venue_status AS ENUM ('PENDING', 'ACTIVE', 'FEATURED', 'BANNED');
@@ -9,7 +34,7 @@ CREATE TYPE booking_status AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLE
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT, -- Se permite NULL porque Supabase Auth maneja la contraseña
     name TEXT NOT NULL,
     phone TEXT,
     avatar TEXT,
@@ -201,6 +226,9 @@ CREATE POLICY "Public can view basic user info" ON users
 CREATE POLICY "Users can update own profile" ON users
     FOR UPDATE USING (auth.uid() = id);
 
+CREATE POLICY "Users can insert own profile" ON users
+    FOR INSERT WITH CHECK (auth.uid() = id);
+
 -- VENUES: Todos pueden ver locales activos
 CREATE POLICY "Anyone can view active venues" ON venues
     FOR SELECT USING (status IN ('ACTIVE', 'FEATURED'));
@@ -326,6 +354,30 @@ INSERT INTO venue_payment_methods (venue_id, method) VALUES
     ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'TRANSFERENCIA'),
     ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'EFECTIVO');
 
+-- ==================== TRIGGERS DE AUTH (CRUCIAL) ====================
+-- Sincroniza auth.users con public.users automáticamente
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.users (id, email, name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'name', 'Usuario Nuevo'),
+    COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'CLIENTE')
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Elimina el trigger si existe para evitar duplicados
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
 -- ==================== FUNCIONES Y TRIGGERS ====================
 
 -- Función para actualizar rating promedio de un venue
@@ -365,11 +417,21 @@ CREATE TRIGGER trigger_update_venue_favorites
 AFTER INSERT OR DELETE ON user_favorites
 FOR EACH ROW EXECUTE FUNCTION update_venue_favorites();
 
+-- ==================== REPARACIÓN DE USUARIOS EXISTENTES ====================
+-- Ejecuta esto para crear perfiles de usuarios que ya se registraron pero no tienen perfil
+INSERT INTO public.users (id, email, name, role)
+SELECT 
+    id, 
+    email, 
+    COALESCE(raw_user_meta_data->>'name', 'Usuario Existente'),
+    COALESCE((raw_user_meta_data->>'role')::user_role, 'CLIENTE')
+FROM auth.users
+WHERE id NOT IN (SELECT id FROM public.users)
+ON CONFLICT DO NOTHING;
+
 -- ============================================================
 -- ¡LISTO! Tu base de datos está configurada
 -- 
 -- Tablas creadas: 13
--- Usuarios de prueba: 3
--- Locales de ejemplo: 3
--- FAQs: 5
+-- Funciones Auth: Configured
 -- ============================================================

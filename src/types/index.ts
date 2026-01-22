@@ -93,6 +93,17 @@ export interface RegisterData {
 }
 
 /**
+ * Servicio adicional o incluido del local
+ */
+export interface VenueService {
+    id: string;
+    name: string;
+    description?: string;
+    price: number;
+    isOptional: boolean;
+}
+
+/**
  * Datos de un local/venue
  */
 export interface Venue {
@@ -109,6 +120,7 @@ export interface Venue {
     images: string[];
     paymentMethods: PaymentMethod[];
     amenities: string[];
+    services: VenueService[]; // Servicios (incluidos y extra)
     status: VenueStatus;
     rating: number;
     reviewCount: number;

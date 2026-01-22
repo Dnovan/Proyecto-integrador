@@ -116,7 +116,7 @@ const mockVenues: Venue[] = [
         address: 'Av. Insurgentes Sur 1234, Tlalpan',
         zone: 'Tlalpan',
         category: 'HACIENDA',
-        price: 85000,
+        price: 12000,
         capacity: 350,
         images: [
             'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800',
@@ -127,6 +127,11 @@ const mockVenues: Venue[] = [
         ],
         paymentMethods: ['TRANSFERENCIA', 'EFECTIVO'],
         amenities: ['Estacionamiento', 'Cocina', 'Mobiliario', 'Jardín', 'Capilla', 'Suite Nupcial'],
+        services: [
+            { id: 's1', name: 'Mobiliario (Mesas y Sillas)', price: 0, isOptional: false },
+            { id: 's2', name: 'Limpieza post-evento', price: 800, isOptional: true },
+            { id: 's3', name: 'Seguridad privada', price: 1500, isOptional: true }
+        ],
         status: 'FEATURED',
         rating: 4.8,
         reviewCount: 127,
@@ -144,7 +149,7 @@ const mockVenues: Venue[] = [
         address: 'Paseo de la Reforma 500, Polanco',
         zone: 'Polanco',
         category: 'TERRAZA',
-        price: 120000,
+        price: 18000,
         capacity: 200,
         images: [
             'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
@@ -155,6 +160,11 @@ const mockVenues: Venue[] = [
         ],
         paymentMethods: ['TRANSFERENCIA'],
         amenities: ['Valet Parking', 'Barra Premium', 'DJ Booth', 'Terraza Techada', 'Clima'],
+        services: [
+            { id: 's1', name: 'Mobiliario Lounge', price: 0, isOptional: false },
+            { id: 's2', name: 'Limpieza post-evento', price: 500, isOptional: true },
+            { id: 's3', name: 'DJ Residente', price: 3500, isOptional: true }
+        ],
         status: 'ACTIVE',
         rating: 4.6,
         reviewCount: 89,
@@ -172,7 +182,7 @@ const mockVenues: Venue[] = [
         address: 'Calle Orizaba 89, Roma Norte',
         zone: 'Roma Norte',
         category: 'JARDIN',
-        price: 45000,
+        price: 85000,
         capacity: 100,
         images: [
             'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=800',
@@ -183,6 +193,10 @@ const mockVenues: Venue[] = [
         ],
         paymentMethods: ['TRANSFERENCIA', 'EFECTIVO'],
         amenities: ['Estacionamiento', 'Jardín', 'Pérgola', 'Iluminación', 'Mobiliario'],
+        services: [
+            { id: 's1', name: 'Mobiliario Vintage', price: 0, isOptional: false },
+            { id: 's2', name: 'Limpieza post-evento', price: 400, isOptional: true }
+        ],
         status: 'ACTIVE',
         rating: 4.9,
         reviewCount: 56,
@@ -200,7 +214,7 @@ const mockVenues: Venue[] = [
         address: 'Av. Ámsterdam 156, Condesa',
         zone: 'Condesa',
         category: 'SALON_EVENTOS',
-        price: 65000,
+        price: 15000,
         capacity: 180,
         images: [
             'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800',
@@ -211,6 +225,11 @@ const mockVenues: Venue[] = [
         ],
         paymentMethods: ['TRANSFERENCIA'],
         amenities: ['Valet Parking', 'Cocina Industrial', 'Audio Profesional', 'Pista de Baile', 'Clima'],
+        services: [
+            { id: 's1', name: 'Mobiliario de Gala', price: 0, isOptional: false },
+            { id: 's2', name: 'Limpieza post-evento', price: 1000, isOptional: true },
+            { id: 's3', name: 'Personal de baños', price: 800, isOptional: true }
+        ],
         status: 'ACTIVE',
         rating: 4.7,
         reviewCount: 203,
@@ -228,7 +247,7 @@ const mockVenues: Venue[] = [
         address: 'Calle Liverpool 45, Roma Norte',
         zone: 'Roma Norte',
         category: 'BODEGA',
-        price: 55000,
+        price: 11000,
         capacity: 250,
         images: [
             'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800',
@@ -239,6 +258,10 @@ const mockVenues: Venue[] = [
         ],
         paymentMethods: ['TRANSFERENCIA', 'EFECTIVO'],
         amenities: ['Estacionamiento', 'Cocina', 'Barra', 'Proyector', 'WiFi', 'Terraza'],
+        services: [
+            { id: 's1', name: 'Mobiliario Industrial', price: 0, isOptional: false },
+            { id: 's2', name: 'Limpieza post-evento', price: 600, isOptional: true }
+        ],
         status: 'ACTIVE',
         rating: 4.5,
         reviewCount: 78,

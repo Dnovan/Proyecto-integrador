@@ -50,6 +50,11 @@ export const VenueDetailPage: React.FC = () => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [showLoginModal, setShowLoginModal] = useState(false);
 
+    // Dynamic Pricing State
+    const [guestCount, setGuestCount] = useState<number>(0);
+    const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+    const [totalPrice, setTotalPrice] = useState<number>(0);
+
     useEffect(() => {
         const loadData = async () => {
             if (!id) return;
@@ -64,6 +69,7 @@ export const VenueDetailPage: React.FC = () => {
                 setVenue(venueData);
                 setReviews(reviewsData);
                 setAvailability(availabilityData);
+                setGuestCount(venueData.capacity); // Initialize with max capacity
             } catch (error) {
                 console.error('Error loading venue:', error);
             } finally {
@@ -73,6 +79,41 @@ export const VenueDetailPage: React.FC = () => {
 
         loadData();
     }, [id, currentMonth]);
+
+    // Calculate total price effect
+    useEffect(() => {
+        if (!venue) return;
+
+        // Base price calculation (Linear model)
+        // User requirement: Max price determines the ceiling.
+        // The variation from min guests to max guests should not exceed 3000 MXN.
+        // Formula: Price = MaxPrice - (3000 * (1 - occupancyRate))
+
+        const maxDiscount = 3000;
+        const occupancyRate = venue.capacity > 0 ? guestCount / venue.capacity : 0;
+        const rentalPrice = venue.price - (maxDiscount * (1 - occupancyRate));
+
+        // Add extra services
+        let servicesTotal = 0;
+        venue.services?.forEach(service => {
+            if (selectedServices.has(service.id)) {
+                servicesTotal += service.price;
+            }
+        });
+
+        setTotalPrice(rentalPrice + servicesTotal);
+
+    }, [venue, guestCount, selectedServices]);
+
+    const handleServiceToggle = (serviceId: string) => {
+        const newSelected = new Set(selectedServices);
+        if (newSelected.has(serviceId)) {
+            newSelected.delete(serviceId);
+        } else {
+            newSelected.add(serviceId);
+        }
+        setSelectedServices(newSelected);
+    };
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('es-MX', {
@@ -263,22 +304,68 @@ export const VenueDetailPage: React.FC = () => {
                             </p>
                         </Card>
 
-                        {/* Amenidades */}
+                        {/* Servicios y Amenidades */}
                         <Card variant="default">
-                            <h2 className="text-xl font-semibold text-text-primary mb-4">
-                                Amenidades incluidas
-                            </h2>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                {venue.amenities.map((amenity, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="flex items-center gap-2 text-text-secondary"
-                                    >
-                                        <Check className="w-5 h-5 text-neon" />
-                                        <span>{amenity}</span>
-                                    </div>
-                                ))}
+                            <h2 className="text-xl font-semibold text-text-primary mb-4">Servicios y Amenidades</h2>
+
+                            {/* Amenidades Incluidas */}
+                            <div className="mb-6">
+                                <h3 className="text-sm font-medium text-text-muted uppercase mb-3">Amenidades Básicas</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    {venue.amenities.map((amenity, idx) => (
+                                        <div key={idx} className="flex items-center gap-2 text-text-secondary">
+                                            <Check className="w-5 h-5 text-neon" />
+                                            <span>{amenity}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
+
+                            {/* Servicios Extra / Configurable */}
+                            {venue.services && venue.services.length > 0 && (
+                                <div>
+                                    <h3 className="text-sm font-medium text-text-muted uppercase mb-3">Servicios Adicionales (Configurables)</h3>
+                                    <div className="space-y-3">
+                                        {venue.services.map((service) => (
+                                            <div
+                                                key={service.id}
+                                                className={`flex items-center justify-between p-3 rounded-xl border transition-colors cursor-pointer ${(service.isOptional && selectedServices.has(service.id)) || !service.isOptional
+                                                    ? 'bg-neon/10 border-neon/30'
+                                                    : 'bg-bg-secondary border-transparent hover:border-neon/30'
+                                                    }`}
+                                                onClick={() => service.isOptional && handleServiceToggle(service.id)}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center border ${(service.isOptional && selectedServices.has(service.id)) || !service.isOptional
+                                                        ? 'bg-neon border-neon'
+                                                        : 'border-text-muted'
+                                                        }`}>
+                                                        {((service.isOptional && selectedServices.has(service.id)) || !service.isOptional) &&
+                                                            <Check className="w-3 h-3 text-bg-primary" />
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-medium text-text-primary">{service.name}</p>
+                                                        {service.description && (
+                                                            <p className="text-xs text-text-muted">{service.description}</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    {service.price === 0 ? (
+                                                        <span className="text-xs font-bold text-neon bg-neon/10 px-2 py-1 rounded">INCLUIDO</span>
+                                                    ) : (
+                                                        <p className="font-semibold text-text-primary">+{formatPrice(service.price)}</p>
+                                                    )}
+                                                    {service.isOptional && (
+                                                        <p className="text-xs text-text-muted">Opcional</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </Card>
 
                         {/* Métodos de pago */}
@@ -428,16 +515,40 @@ export const VenueDetailPage: React.FC = () => {
                         <div className="sticky top-24">
                             <Card variant="glass" className="border border-neon/30">
                                 <div className="text-center mb-6">
-                                    <p className="text-3xl font-bold text-neon">
-                                        {formatPrice(venue.price)}
-                                    </p>
-                                    <p className="text-text-muted">por evento</p>
+                                    <p className="text-sm text-text-muted mb-1">Precio Total Estimado</p>
+                                    <p className="text-4xl font-bold text-neon">{formatPrice(totalPrice)}</p>
+                                    <p className="text-text-muted text-sm mt-1">por evento</p>
+                                </div>
+
+                                {/* Slider de Invitados */}
+                                <div className="mb-6">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <label className="text-sm font-medium text-text-secondary">
+                                            Invitados
+                                        </label>
+                                        <span className="text-neon font-bold">{guestCount}</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min={1}
+                                        max={venue.capacity}
+                                        value={guestCount}
+                                        onChange={(e) => setGuestCount(Number(e.target.value))}
+                                        className="w-full h-2 bg-bg-secondary rounded-lg appearance-none cursor-pointer accent-neon"
+                                    />
+                                    <div className="flex justify-between mt-1 text-xs text-text-muted">
+                                        <span>1</span>
+                                        <span>Max: {venue.capacity}</span>
+                                    </div>
                                 </div>
 
                                 {selectedDate && (
-                                    <div className="mb-4 p-3 bg-neon/10 rounded-2xl">
-                                        <p className="text-sm text-text-secondary">Fecha seleccionada:</p>
-                                        <p className="text-neon font-semibold">
+                                    <div className="mb-6 p-3 bg-neon/10 rounded-2xl border border-neon/20">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <Calendar className="w-4 h-4 text-neon" />
+                                            <span className="text-sm font-semibold text-neon">Fecha seleccionada</span>
+                                        </div>
+                                        <p className="text-text-primary ml-6">
                                             {new Date(selectedDate + 'T12:00:00').toLocaleDateString('es-MX', {
                                                 weekday: 'long',
                                                 day: 'numeric',
@@ -447,6 +558,24 @@ export const VenueDetailPage: React.FC = () => {
                                         </p>
                                     </div>
                                 )}
+
+                                {/* Desglose Rápido */}
+                                <div className="space-y-2 mb-6 text-sm">
+                                    <div className="flex justify-between text-text-secondary">
+                                        <span>Renta Base ({guestCount} pers.)</span>
+                                        <span>{formatPrice(totalPrice - [...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
+                                    </div>
+                                    {selectedServices.size > 0 && (
+                                        <div className="flex justify-between text-text-secondary">
+                                            <span>Servicios Extra</span>
+                                            <span>+{formatPrice([...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
+                                        </div>
+                                    )}
+                                    <div className="border-t border-neon/10 my-2 pt-2 flex justify-between font-bold text-text-primary">
+                                        <span>Total</span>
+                                        <span>{formatPrice(totalPrice)}</span>
+                                    </div>
+                                </div>
 
                                 <Button
                                     fullWidth
