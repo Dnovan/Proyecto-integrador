@@ -76,7 +76,7 @@ export const HelpCenterPage: React.FC = () => {
                         <Book className="w-8 h-8 text-neon mx-auto mb-3" />
                         <h3 className="font-semibold text-text-primary mb-2">Guía de inicio</h3>
                         <p className="text-text-muted text-sm">
-                            Aprende a usar EventSpace paso a paso
+                            Aprende a usar LocalSpace paso a paso
                         </p>
                     </Card>
                     <Card variant="glass" hoverable glowOnHover className="text-center">

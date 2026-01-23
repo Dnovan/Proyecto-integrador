@@ -18,7 +18,6 @@ import {
     ChevronLeft,
     ChevronRight,
     X,
-    Calendar,
     CreditCard,
     Banknote,
     MessageSquare,
@@ -304,69 +303,188 @@ export const VenueDetailPage: React.FC = () => {
                             </p>
                         </Card>
 
-                        {/* Servicios y Amenidades */}
-                        <Card variant="default">
-                            <h2 className="text-xl font-semibold text-text-primary mb-4">Servicios y Amenidades</h2>
-
-                            {/* Amenidades Incluidas */}
-                            <div className="mb-6">
-                                <h3 className="text-sm font-medium text-text-muted uppercase mb-3">Amenidades Básicas</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {venue.amenities.map((amenity, idx) => (
-                                        <div key={idx} className="flex items-center gap-2 text-text-secondary">
-                                            <Check className="w-5 h-5 text-neon" />
-                                            <span>{amenity}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                        {/* Servicios y Amenidades - Two Column Layout with Booking */}
+                        <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                            {/* Header con gradiente dorado */}
+                            <div className="px-6 py-5" style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)' }}>
+                                <h2 className="text-xl font-bold text-white">Servicios y Amenidades</h2>
+                                <p className="text-white/80 text-sm mt-1">Selecciona los servicios adicionales para tu evento</p>
                             </div>
 
-                            {/* Servicios Extra / Configurable */}
-                            {venue.services && venue.services.length > 0 && (
-                                <div>
-                                    <h3 className="text-sm font-medium text-text-muted uppercase mb-3">Servicios Adicionales (Configurables)</h3>
-                                    <div className="space-y-3">
-                                        {venue.services.map((service) => (
-                                            <div
-                                                key={service.id}
-                                                className={`flex items-center justify-between p-3 rounded-xl border transition-colors cursor-pointer ${(service.isOptional && selectedServices.has(service.id)) || !service.isOptional
-                                                    ? 'bg-neon/10 border-neon/30'
-                                                    : 'bg-bg-secondary border-transparent hover:border-neon/30'
-                                                    }`}
-                                                onClick={() => service.isOptional && handleServiceToggle(service.id)}
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center border ${(service.isOptional && selectedServices.has(service.id)) || !service.isOptional
-                                                        ? 'bg-neon border-neon'
-                                                        : 'border-text-muted'
-                                                        }`}>
-                                                        {((service.isOptional && selectedServices.has(service.id)) || !service.isOptional) &&
-                                                            <Check className="w-3 h-3 text-bg-primary" />
-                                                        }
+                            <div className="bg-white p-6">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div className="space-y-8">
+                                        {/* Amenidades Básicas */}
+                                        <div>
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <div className="w-1 h-6 rounded-full" style={{ backgroundColor: '#D4AF37' }} />
+                                                <h3 className="text-lg font-bold text-gray-900">Amenidades Básicas</h3>
+                                            </div>
+                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                {venue.amenities.map((amenity, idx) => (
+                                                    <div key={idx} className="flex items-center gap-2 text-gray-700">
+                                                        <Check className="w-5 h-5" style={{ color: '#D4AF37' }} />
+                                                        <span className="font-medium">{amenity}</span>
                                                     </div>
-                                                    <div>
-                                                        <p className="font-medium text-text-primary">{service.name}</p>
-                                                        {service.description && (
-                                                            <p className="text-xs text-text-muted">{service.description}</p>
-                                                        )}
-                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Servicios Adicionales */}
+                                        {venue.services && venue.services.length > 0 && (
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-4">
+                                                    <div className="w-1 h-6 rounded-full" style={{ backgroundColor: '#D4AF37' }} />
+                                                    <h3 className="text-lg font-bold text-gray-900">Servicios Adicionales (Configurables)</h3>
                                                 </div>
-                                                <div className="text-right">
-                                                    {service.price === 0 ? (
-                                                        <span className="text-xs font-bold text-neon bg-neon/10 px-2 py-1 rounded">INCLUIDO</span>
-                                                    ) : (
-                                                        <p className="font-semibold text-text-primary">+{formatPrice(service.price)}</p>
-                                                    )}
-                                                    {service.isOptional && (
-                                                        <p className="text-xs text-text-muted">Opcional</p>
-                                                    )}
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    {venue.services.map((service) => {
+                                                        const isSelected = (service.isOptional && selectedServices.has(service.id)) || !service.isOptional;
+                                                        const isIncluded = !service.isOptional || service.price === 0;
+                                                        return (
+                                                            <div
+                                                                key={service.id}
+                                                                className={`flex items-center justify-between p-4 rounded-xl transition-all cursor-pointer ${isSelected ? 'shadow-md' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
+                                                                style={isSelected ? { backgroundColor: 'rgba(212, 175, 55, 0.15)', border: '2px solid rgba(212, 175, 55, 0.4)' } : {}}
+                                                                onClick={() => service.isOptional && handleServiceToggle(service.id)}
+                                                            >
+                                                                <div className="flex-1 pr-3">
+                                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                                        <p className="font-bold text-gray-900 leading-tight">{service.name}</p>
+                                                                        {isIncluded && <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">Incluido</span>}
+                                                                    </div>
+                                                                    {service.description && <p className="text-xs text-gray-500 mt-1 line-clamp-2">{service.description}</p>}
+
+                                                                    <div className="mt-2">
+                                                                        {isIncluded ? (
+                                                                            <span className="text-xs font-bold text-[#D4AF37]">INCLUIDO</span>
+                                                                        ) : (
+                                                                            <span className="text-xs font-bold text-gray-700">+{formatPrice(service.price)}</span>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className={`w-6 h-6 flex-shrink-0 rounded-full flex items-center justify-center border-2 ${isSelected ? 'border-transparent' : 'border-gray-300 bg-white'}`} style={isSelected ? { backgroundColor: '#D4AF37' } : {}}>
+                                                                    {isSelected && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
-                                        ))}
+                                        )}
+                                    </div>
+
+                                    {/* RIGHT - Booking Panel + Calendar */}
+                                    <div className="space-y-6">
+                                        {/* Booking Card */}
+                                        <div className="p-5 rounded-2xl border-2" style={{ borderColor: 'rgba(212, 175, 55, 0.3)', backgroundColor: 'rgba(212, 175, 55, 0.05)' }}>
+                                            <div className="text-center mb-5">
+                                                <p className="text-sm text-gray-500 mb-1">Precio Total Estimado</p>
+                                                <p className="text-3xl font-bold" style={{ color: '#D4AF37' }}>{formatPrice(totalPrice)}</p>
+                                                <p className="text-gray-500 text-sm mt-1">por evento</p>
+                                            </div>
+
+                                            <div className="mb-5">
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <label className="text-sm font-medium text-gray-700">Invitados</label>
+                                                    <span className="font-bold" style={{ color: '#D4AF37' }}>{guestCount}</span>
+                                                </div>
+                                                <input type="range" min={1} max={venue.capacity} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" style={{ accentColor: '#D4AF37' }} />
+                                                <div className="flex justify-between mt-1 text-xs text-gray-500">
+                                                    <span>1</span>
+                                                    <span>Max: {venue.capacity}</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2 mb-5 text-sm">
+                                                <div className="flex justify-between text-gray-600">
+                                                    <span>Renta Base ({guestCount} pers.)</span>
+                                                    <span>{formatPrice(totalPrice - [...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
+                                                </div>
+                                                {selectedServices.size > 0 && (
+                                                    <div className="flex justify-between text-gray-600">
+                                                        <span>Servicios Extra</span>
+                                                        <span>+{formatPrice([...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
+                                                    </div>
+                                                )}
+                                                <div className="border-t border-gray-200 my-2 pt-2 flex justify-between font-bold text-gray-900">
+                                                    <span>Total</span>
+                                                    <span>{formatPrice(totalPrice)}</span>
+                                                </div>
+                                            </div>
+
+                                            <Button fullWidth size="lg" disabled={!selectedDate} className="mb-3" onClick={() => { if (!isAuthenticated) { setShowLoginModal(true); } else { console.log('Booking:', selectedDate); } }}>
+                                                Solicitar Reservación
+                                            </Button>
+
+                                            <Button variant="outline" fullWidth leftIcon={<MessageSquare className="w-5 h-5" />}>
+                                                Contactar Proveedor
+                                            </Button>
+
+                                            <div className="mt-5 pt-5 border-t border-gray-200">
+                                                <div className="flex items-center gap-3">
+                                                    <Avatar name={venue.providerName} size="md" />
+                                                    <div>
+                                                        <p className="font-semibold text-gray-900">{venue.providerName}</p>
+                                                        <p className="text-sm text-gray-500">Proveedor verificado</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Mini Calendar */}
+                                        <div className="p-4 rounded-2xl border border-gray-200 bg-white">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <h4 className="font-bold text-gray-900 text-sm">Disponibilidad - {currentMonth.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' })}</h4>
+                                                <div className="flex gap-1">
+                                                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1 hover:bg-gray-100 rounded">
+                                                        <ChevronLeft className="w-4 h-4" />
+                                                    </button>
+                                                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1 hover:bg-gray-100 rounded">
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                                                {['Lu', 'Ma', 'Ma', 'Ju', 'Ve', 'Sa', 'So'].map((d, i) => (
+                                                    <div key={i} className="text-gray-400 font-medium py-1">{d}</div>
+                                                ))}
+                                                {getDaysInMonth(currentMonth).map((day, idx) => (
+                                                    <div key={idx}>
+                                                        {day !== null ? (
+                                                            <button
+                                                                className={`w-7 h-7 rounded-full text-xs font-medium transition-all ${isDateAvailable(day)
+                                                                    ? selectedDate === `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+                                                                        ? 'text-white'
+                                                                        : 'text-gray-700 hover:bg-gray-100'
+                                                                    : 'text-gray-300 cursor-not-allowed'
+                                                                    }`}
+                                                                style={selectedDate === `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` ? { backgroundColor: '#D4AF37' } : {}}
+                                                                disabled={!isDateAvailable(day)}
+                                                                onClick={() => isDateAvailable(day) && setSelectedDate(`${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`)}
+                                                            >
+                                                                {day}
+                                                            </button>
+                                                        ) : <div className="w-7 h-7" />}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="flex items-center gap-4 mt-3 text-xs">
+                                                <div className="flex items-center gap-1">
+                                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#D4AF37' }} />
+                                                    <span className="text-gray-500">Disponible</span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                    <div className="w-3 h-3 bg-gray-200 rounded-full" />
+                                                    <span className="text-gray-500">No disponible</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            )}
-                        </Card>
+                            </div>
+                        </div>
 
                         {/* Métodos de pago */}
                         <Card variant="default">
@@ -386,83 +504,6 @@ export const VenueDetailPage: React.FC = () => {
                                         <span className="text-text-primary">Efectivo</span>
                                     </div>
                                 )}
-                            </div>
-                        </Card>
-
-                        {/* Calendario */}
-                        <Card variant="default">
-                            <h2 className="text-xl font-semibold text-text-primary mb-4">
-                                <Calendar className="w-5 h-5 inline mr-2" />
-                                Disponibilidad
-                            </h2>
-
-                            {/* Navegación del mes */}
-                            <div className="flex items-center justify-between mb-4">
-                                <button
-                                    onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-                                    className="p-2 hover:bg-bg-secondary rounded-lg transition-colors"
-                                >
-                                    <ChevronLeft className="w-5 h-5" />
-                                </button>
-                                <span className="text-lg font-semibold text-text-primary">
-                                    {currentMonth.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' })}
-                                </span>
-                                <button
-                                    onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-                                    className="p-2 hover:bg-bg-secondary rounded-lg transition-colors"
-                                >
-                                    <ChevronRight className="w-5 h-5" />
-                                </button>
-                            </div>
-
-                            {/* Días de la semana */}
-                            <div className="grid grid-cols-7 gap-1 mb-2">
-                                {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map((day) => (
-                                    <div key={day} className="text-center text-text-muted text-sm py-2">
-                                        {day}
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Días del mes */}
-                            <div className="grid grid-cols-7 gap-1">
-                                {getDaysInMonth(currentMonth).map((day, idx) => (
-                                    <div key={idx} className="aspect-square">
-                                        {day !== null && (
-                                            <button
-                                                className={`
-                          w-full h-full rounded-lg text-sm font-medium
-                          transition-all duration-200
-                          ${isDateAvailable(day)
-                                                        ? selectedDate === `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-                                                            ? 'bg-neon text-black'
-                                                            : 'bg-neon/10 text-neon hover:bg-neon/20'
-                                                        : 'bg-bg-secondary text-text-muted cursor-not-allowed'
-                                                    }
-                        `}
-                                                disabled={!isDateAvailable(day)}
-                                                onClick={() => {
-                                                    if (isDateAvailable(day)) {
-                                                        setSelectedDate(`${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
-                                                    }
-                                                }}
-                                            >
-                                                {day}
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex items-center gap-4 mt-4 text-sm">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 bg-neon/10 rounded" />
-                                    <span className="text-text-secondary">Disponible</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 bg-bg-secondary rounded" />
-                                    <span className="text-text-secondary">No disponible</span>
-                                </div>
                             </div>
                         </Card>
 
@@ -508,113 +549,6 @@ export const VenueDetailPage: React.FC = () => {
                                 ))}
                             </div>
                         </Card>
-                    </div>
-
-                    {/* Sidebar - Card de reservación */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-24">
-                            <Card variant="glass" className="border border-neon/30">
-                                <div className="text-center mb-6">
-                                    <p className="text-sm text-text-muted mb-1">Precio Total Estimado</p>
-                                    <p className="text-4xl font-bold text-neon">{formatPrice(totalPrice)}</p>
-                                    <p className="text-text-muted text-sm mt-1">por evento</p>
-                                </div>
-
-                                {/* Slider de Invitados */}
-                                <div className="mb-6">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <label className="text-sm font-medium text-text-secondary">
-                                            Invitados
-                                        </label>
-                                        <span className="text-neon font-bold">{guestCount}</span>
-                                    </div>
-                                    <input
-                                        type="range"
-                                        min={1}
-                                        max={venue.capacity}
-                                        value={guestCount}
-                                        onChange={(e) => setGuestCount(Number(e.target.value))}
-                                        className="w-full h-2 bg-bg-secondary rounded-lg appearance-none cursor-pointer accent-neon"
-                                    />
-                                    <div className="flex justify-between mt-1 text-xs text-text-muted">
-                                        <span>1</span>
-                                        <span>Max: {venue.capacity}</span>
-                                    </div>
-                                </div>
-
-                                {selectedDate && (
-                                    <div className="mb-6 p-3 bg-neon/10 rounded-2xl border border-neon/20">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <Calendar className="w-4 h-4 text-neon" />
-                                            <span className="text-sm font-semibold text-neon">Fecha seleccionada</span>
-                                        </div>
-                                        <p className="text-text-primary ml-6">
-                                            {new Date(selectedDate + 'T12:00:00').toLocaleDateString('es-MX', {
-                                                weekday: 'long',
-                                                day: 'numeric',
-                                                month: 'long',
-                                                year: 'numeric',
-                                            })}
-                                        </p>
-                                    </div>
-                                )}
-
-                                {/* Desglose Rápido */}
-                                <div className="space-y-2 mb-6 text-sm">
-                                    <div className="flex justify-between text-text-secondary">
-                                        <span>Renta Base ({guestCount} pers.)</span>
-                                        <span>{formatPrice(totalPrice - [...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
-                                    </div>
-                                    {selectedServices.size > 0 && (
-                                        <div className="flex justify-between text-text-secondary">
-                                            <span>Servicios Extra</span>
-                                            <span>+{formatPrice([...selectedServices].reduce((sum, id) => sum + (venue.services?.find(s => s.id === id)?.price || 0), 0))}</span>
-                                        </div>
-                                    )}
-                                    <div className="border-t border-neon/10 my-2 pt-2 flex justify-between font-bold text-text-primary">
-                                        <span>Total</span>
-                                        <span>{formatPrice(totalPrice)}</span>
-                                    </div>
-                                </div>
-
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    disabled={!selectedDate}
-                                    className="mb-3"
-                                    onClick={() => {
-                                        if (!isAuthenticated) {
-                                            setShowLoginModal(true);
-                                        } else {
-                                            // TODO: Proceed with booking
-                                            console.log('Booking for date:', selectedDate);
-                                        }
-                                    }}
-                                >
-                                    Solicitar Reservación
-                                </Button>
-
-                                <Button
-                                    variant="outline"
-                                    fullWidth
-                                    leftIcon={<MessageSquare className="w-5 h-5" />}
-                                >
-                                    Contactar Proveedor
-                                </Button>
-
-                                <div className="mt-6 pt-6 border-t border-neon/10">
-                                    <div className="flex items-center gap-3">
-                                        <Avatar name={venue.providerName} size="md" />
-                                        <div>
-                                            <p className="font-semibold text-text-primary">
-                                                {venue.providerName}
-                                            </p>
-                                            <p className="text-sm text-text-muted">Proveedor verificado</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card>
-                        </div>
                     </div>
                 </div>
             </section>

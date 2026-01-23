@@ -69,7 +69,7 @@ export const InstitutionPage: React.FC = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <h1 className="text-5xl md:text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-neon to-white tracking-tighter drop-shadow-2xl">
-                            EventSpace
+                            LocalSpace
                         </h1>
                         <h2 className="text-2xl md:text-4xl font-bold text-white mb-8 drop-shadow-lg">
                             Renta. Reserva. Celebra.
@@ -77,7 +77,7 @@ export const InstitutionPage: React.FC = () => {
                         <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12 drop-shadow-md font-medium">
                             ¿Planeando un evento y no sabes por dónde empezar?
                             <br />
-                            Con EventSpace olvídate de la búsqueda interminable, las llamadas y la mala coordinación. Aquí encuentras el local perfecto, comida, y meseros incluidos, todo desde una sola app.
+                            Con LocalSpace olvídate de la búsqueda interminable, las llamadas y la mala coordinación. Aquí encuentras el local perfecto, comida, y meseros incluidos, todo desde una sola app.
                         </p>
                     </motion.div>
                 </div>
@@ -99,7 +99,7 @@ export const InstitutionPage: React.FC = () => {
                             Todo lo que tu evento necesita, ahora mismo
                         </h3>
                         <p className="text-text-secondary mb-8">
-                            En EventSpace conectamos personas con espacios listos para eventos y servicios profesionales que hacen que todo fluya. Tú eliges el lugar, nosotros nos encargamos del resto.
+                            En LocalSpace conectamos personas con espacios listos para eventos y servicios profesionales que hacen que todo fluya. Tú eliges el lugar, nosotros nos encargamos del resto.
                         </p>
                         <div className="space-y-4">
                             {[
@@ -148,7 +148,7 @@ export const InstitutionPage: React.FC = () => {
                             ¿Por qué complicarte coordinando proveedores?
                         </h3>
                         <p className="text-text-secondary text-lg leading-relaxed mb-12">
-                            Con EventSpace tienes todo centralizado para que tu evento salga perfecto desde el primer clic. Ya sea una fiesta, un evento corporativo o una celebración especial, aquí encuentras la solución completa.
+                            Con LocalSpace tienes todo centralizado para que tu evento salga perfecto desde el primer clic. Ya sea una fiesta, un evento corporativo o una celebración especial, aquí encuentras la solución completa.
                         </p>
                     </motion.div>
                 </div>
@@ -166,7 +166,7 @@ export const InstitutionPage: React.FC = () => {
                         <div className="p-8 rounded-3xl bg-gradient-to-br from-bg-card to-bg-primary border border-white/10">
                             <h3 className="text-2xl font-bold text-white mb-4">También para dueños de locales</h3>
                             <p className="text-text-secondary mb-6">
-                                ¿Tienes un espacio disponible? Publícalo en EventSpace y comienza a generar ingresos. Aumenta tu visibilidad, recibe reservas reales y administra todo desde un solo lugar.
+                                ¿Tienes un espacio disponible? Publícalo en LocalSpace y comienza a generar ingresos. Aumenta tu visibilidad, recibe reservas reales y administra todo desde un solo lugar.
                             </p>
                             <Button variant="outline" onClick={() => navigate('/registro?role=PROVEEDOR')}>
                                 Publicar mi espacio
@@ -184,7 +184,7 @@ export const InstitutionPage: React.FC = () => {
                             Convierte tu evento en una experiencia inolvidable
                         </h3>
                         <p className="text-text-secondary mb-6">
-                            En EventSpace creemos que organizar un evento debe ser fácil, rápido y confiable. Por eso creamos una plataforma que te da control, confianza y resultados.
+                            En LocalSpace creemos que organizar un evento debe ser fácil, rápido y confiable. Por eso creamos una plataforma que te da control, confianza y resultados.
                         </p>
                     </motion.div>
                 </div>
@@ -226,7 +226,7 @@ export const InstitutionPage: React.FC = () => {
                             </Button>
                         </div>
 
-                        <h3 className="text-2xl font-bold text-white mb-2">EventSpace</h3>
+                        <h3 className="text-2xl font-bold text-white mb-2">LocalSpace</h3>
                         <p className="text-text-secondary">Donde los eventos dejan de ser un problema y se convierten en momentos inolvidables.</p>
                     </motion.div>
                 </div>

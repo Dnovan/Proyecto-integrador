@@ -73,10 +73,10 @@ export const LoginPage: React.FC = () => {
                     {/* Logo */}
                     <Link to="/" className="inline-flex items-center gap-3 mb-12 group">
                         <div className="w-12 h-12 bg-gradient-to-br from-neon to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-neon/20 group-hover:shadow-neon/40 transition-shadow">
-                            <span className="text-black font-black text-xl">ES</span>
+                            <span className="text-black font-black text-xl">LS</span>
                         </div>
                         <span className="text-2xl font-bold text-gray-900">
-                            EventSpace
+                            LocalSpace
                         </span>
                     </Link>
 

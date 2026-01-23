@@ -50,23 +50,99 @@ export const HomePage: React.FC = () => {
         <div className="min-h-screen bg-white">
             {/* Hero Section - Blanco con Dorado */}
             <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
-                {/* Decorative background */}
+                {/* Decorative background with animated floating balls */}
                 <div className="absolute inset-0">
                     <div
                         className="absolute inset-0"
                         style={{ background: `linear-gradient(135deg, ${goldLight}40 0%, white 50%, ${goldLight}30 100%)` }}
                     />
-                    <div
+
+                    {/* Animated Floating Balls */}
+                    <motion.div
                         className="absolute top-20 left-20 w-80 h-80 rounded-full blur-3xl"
                         style={{ backgroundColor: `${gold}25` }}
+                        animate={{
+                            y: [0, -30, 0],
+                            x: [0, 15, 0],
+                            scale: [1, 1.05, 1],
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
                     />
-                    <div
+                    <motion.div
                         className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full blur-3xl"
                         style={{ backgroundColor: `${gold}30` }}
+                        animate={{
+                            y: [0, 25, 0],
+                            x: [0, -20, 0],
+                            scale: [1, 1.08, 1],
+                        }}
+                        transition={{
+                            duration: 10,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 1
+                        }}
                     />
-                    <div
+                    <motion.div
                         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl"
                         style={{ backgroundColor: `${gold}15` }}
+                        animate={{
+                            scale: [1, 1.1, 1],
+                            opacity: [0.4, 0.6, 0.4],
+                        }}
+                        transition={{
+                            duration: 6,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 0.5
+                        }}
+                    />
+
+                    {/* Small floating accent balls */}
+                    <motion.div
+                        className="absolute top-40 right-40 w-20 h-20 rounded-full"
+                        style={{ backgroundColor: `${gold}40`, filter: 'blur(2px)' }}
+                        animate={{
+                            y: [0, -40, 0],
+                            x: [0, 20, 0],
+                        }}
+                        transition={{
+                            duration: 5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    <motion.div
+                        className="absolute bottom-40 left-40 w-16 h-16 rounded-full"
+                        style={{ backgroundColor: `${gold}35`, filter: 'blur(1px)' }}
+                        animate={{
+                            y: [0, -25, 0],
+                            x: [0, -15, 0],
+                        }}
+                        transition={{
+                            duration: 7,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 2
+                        }}
+                    />
+                    <motion.div
+                        className="absolute top-60 left-1/3 w-12 h-12 rounded-full"
+                        style={{ backgroundColor: `${gold}50`, filter: 'blur(1px)' }}
+                        animate={{
+                            y: [0, -35, 0],
+                            scale: [1, 1.2, 1],
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 1.5
+                        }}
                     />
                 </div>
 
@@ -101,8 +177,6 @@ export const HomePage: React.FC = () => {
                     >
                         Encuentra el{' '}
                         <span style={{ color: gold }}>espacio perfecto</span>
-                        <br />
-                        para tu evento
                     </motion.h1>
 
                     {/* Subtítulo */}

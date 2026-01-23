@@ -100,10 +100,10 @@ export const RegisterPage: React.FC = () => {
                     {/* Logo */}
                     <Link to="/" className="inline-flex items-center gap-3 mb-8 group">
                         <div className="w-10 h-10 bg-gradient-to-br from-neon to-accent rounded-xl flex items-center justify-center shadow-lg shadow-neon/20 group-hover:shadow-neon/40 transition-shadow">
-                            <span className="text-black font-black text-lg">ES</span>
+                            <span className="text-black font-black text-lg">LS</span>
                         </div>
                         <span className="text-xl font-bold text-gray-900">
-                            EventSpace
+                            LocalSpace
                         </span>
                     </Link>
 

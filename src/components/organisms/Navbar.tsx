@@ -30,7 +30,6 @@ export const Navbar: React.FC = () => {
     const navLinks = [
         { label: 'Inicio', to: '/' },
         { label: 'Espacios', to: '/espacios' },
-        { label: 'Servicios', to: '/servicios' },
         { label: 'Contacto', to: '/contacto' },
     ];
 
@@ -49,9 +48,9 @@ export const Navbar: React.FC = () => {
                             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
                             style={{ backgroundColor: goldColor, boxShadow: `0 10px 25px ${goldColor}40` }}
                         >
-                            <span className="text-white font-black text-sm">ES</span>
+                            <span className="text-white font-black text-sm">LS</span>
                         </div>
-                        <span className="hidden sm:block text-gray-900 font-black">EventSpace</span>
+                        <span className="hidden sm:block text-gray-900 font-black">LocalSpace</span>
                     </Link>
 
                     {/* Navegación desktop */}
@@ -125,7 +124,7 @@ export const Navbar: React.FC = () => {
                                         className="px-5 py-2.5 text-white font-bold text-sm rounded-xl transition-all hover:opacity-90"
                                         style={{ backgroundColor: goldColor, boxShadow: `0 10px 25px ${goldColor}40` }}
                                     >
-                                        Registrarse
+                                        Renta
                                     </button>
                                 </Link>
                             </>
@@ -202,7 +201,7 @@ export const Navbar: React.FC = () => {
                                         className="w-full px-4 py-3 text-white font-bold rounded-xl"
                                         style={{ backgroundColor: goldColor }}
                                     >
-                                        Registrarse
+                                        Renta
                                     </button>
                                 </Link>
                             </div>

@@ -164,7 +164,7 @@ export const AdminPanel: React.FC = () => {
                                 ADMIN_PANEL
                             </h1>
                             <p className="text-text-muted text-sm">
-                                <span className="text-admin-accent">$</span> EventSpace System Control
+                                <span className="text-admin-accent">$</span> LocalSpace System Control
                             </p>
                         </div>
                     </div>

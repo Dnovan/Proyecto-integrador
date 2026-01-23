@@ -42,7 +42,7 @@ export const ContactPage: React.FC = () => {
 
                         <div className="bg-bg-card p-8 md:p-12 rounded-3xl border border-white/5 backdrop-blur-sm mb-12">
                             <p className="text-lg text-text-secondary leading-relaxed mb-12">
-                                EventSpace es una aplicación creada y administrada por su equipo fundador, enfocado en ofrecer una plataforma confiable, práctica y moderna para la renta de locales y la organización de eventos.
+                                LocalSpace es una aplicación creada y administrada por su equipo fundador, enfocado en ofrecer una plataforma confiable, práctica y moderna para la renta de locales y la organización de eventos.
                             </p>
 
                             {/* CardSwap Animation with Venue Images */}
@@ -85,11 +85,11 @@ export const ContactPage: React.FC = () => {
                             </div>
 
                             <p className="text-text-secondary leading-relaxed mb-8">
-                                Como fundadores de EventSpace, participamos activamente en el desarrollo, operación y crecimiento de la plataforma, con el compromiso de mejorar constantemente la experiencia de nuestros usuarios y aliados.
+                                Como fundadores de LocalSpace, participamos activamente en el desarrollo, operación y crecimiento de la plataforma, con el compromiso de mejorar constantemente la experiencia de nuestros usuarios y aliados.
                             </p>
 
                             <p className="text-text-secondary leading-relaxed font-medium">
-                                Si tienes dudas, comentarios o estás interesado en colaborar con nosotros, no dudes en ponerte en contacto. En EventSpace creemos en las alianzas, la innovación y en crear eventos mejor organizados.
+                                Si tienes dudas, comentarios o estás interesado en colaborar con nosotros, no dudes en ponerte en contacto. En LocalSpace creemos en las alianzas, la innovación y en crear eventos mejor organizados.
                             </p>
                         </div>
                     </motion.div>
@@ -108,7 +108,7 @@ export const ContactPage: React.FC = () => {
                             </div>
                             <div>
                                 <h4 className="text-white font-bold">Email</h4>
-                                <p className="text-text-secondary">contacto@eventspace.com</p>
+                                <p className="text-text-secondary">contacto@LocalSpace.com</p>
                             </div>
                         </motion.div>
 

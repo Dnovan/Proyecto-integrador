@@ -18,12 +18,12 @@ export const Footer: React.FC = () => {
                     <div className="space-y-4">
                         <Link to="/" className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-neon rounded-lg flex items-center justify-center">
-                                <span className="text-black font-black text-sm">ES</span>
+                                <span className="text-black font-black text-sm">LS</span>
                             </div>
-                            <span className="text-neon font-bold text-xl">EventSpace</span>
+                            <span className="text-neon font-bold text-xl">LocalSpace</span>
                         </Link>
                         <p className="text-text-secondary text-sm">
-                            La plataforma premium para encontrar el espacio perfecto para tu evento.
+                            La plataforma premium para encontrar el espacio perfecto.
                         </p>
                         <div className="flex gap-4">
                             <a href="#" className="text-text-muted hover:text-neon transition-colors">
@@ -119,7 +119,7 @@ export const Footer: React.FC = () => {
                 {/* Copyright */}
                 <div className="mt-12 pt-8 border-t border-neon/10 text-center">
                     <p className="text-text-muted text-sm">
-                        © {currentYear} EventSpace. Todos los derechos reservados.
+                        © {currentYear} LocalSpace. Todos los derechos reservados.
                     </p>
                 </div>
             </div>
